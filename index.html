@@ -2,86 +2,34 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>球队积分兑换</title>
+    <title>登录测试</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        body { background: #f5f6fa; padding: 20px; max-width: 600px; margin: 0 auto; }
-        .container { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .login-box { margin-bottom: 20px; }
-        .login-box h3 { margin-bottom: 10px; }
-        .login-box input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
-        .login-box button { background: #4f6ef7; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 16px; }
-        .hidden { display: none; }
-        .points-card { background: linear-gradient(135deg, #4f6ef7, #6a8bff); border-radius: 16px; padding: 30px; text-align: center; color: white; margin-bottom: 20px; }
-        .points-label { font-size: 14px; opacity: 0.8; }
-        .points-value { font-size: 48px; font-weight: bold; margin-top: 10px; }
-        .section-title { font-size: 18px; font-weight: bold; color: #333; margin: 20px 0 10px; }
-        .prize-item, .record-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; border-bottom: 1px solid #eee; }
-        .prize-item:last-child, .record-item:last-child { border-bottom: none; }
-        .prize-info, .record-info { display: flex; flex-direction: column; }
-        .prize-name, .record-name { font-size: 16px; font-weight: bold; }
-        .prize-cost, .record-cost { font-size: 14px; color: #ff6b6b; margin-top: 5px; }
-        .prize-stock, .record-time { font-size: 12px; color: #888; margin-top: 3px; }
-        .record-right { text-align: right; }
-        .record-status { display: inline-block; font-size: 12px; color: #4f6ef7; margin-top: 5px; background: #eef1ff; padding: 2px 8px; border-radius: 10px; }
-        .exchange-btn { background: #4f6ef7; color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; }
-        .exchange-btn:disabled { background: #ccc; cursor: not-allowed; }
-        .empty { text-align: center; color: #888; padding: 20px; font-size: 14px; }
-        .notice-box { margin-top: 20px; background: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; border-radius: 8px; max-height: 200px; overflow-y: auto; }
-        .notice-box .notice-item { padding: 5px 0; font-size: 13px; border-bottom: 1px dashed #ffe082; }
-        .notice-box .notice-item:last-child { border-bottom: none; }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 登录界面（默认显示） -->
-        <div id="loginSection" class="login-box">
-            <h3>队员登录</h3>
-            <input type="text" id="accountInput" placeholder="账号">
-            <input type="password" id="passwordInput" placeholder="密码">
-            <button onclick="loginUser()">登录</button>
-        </div>
+    <div id="loginSection">
+        <h3>队员登录</h3>
+        <input type="text" id="accountInput" placeholder="账号">
+        <input type="password" id="passwordInput" placeholder="密码">
+        <button onclick="loginUser()">登录</button>
+    </div>
 
-        <!-- 主界面（默认隐藏） -->
-        <div id="mainSection" class="hidden">
-            <div style="text-align:right; margin-bottom:10px;">
-                <span id="userName"></span>
-                <button onclick="logoutUser()" style="margin-left:10px;">退出</button>
-            </div>
-            <div class="points-card">
-                <div class="points-label">我的积分</div>
-                <div class="points-value" id="pointsDisplay">0</div>
-            </div>
-
-            <div class="section-title">可兑换奖品</div>
-            <div id="prizeList"></div>
-
-            <div class="section-title">我的兑换记录</div>
-            <div id="recordList"></div>
-
-            <div class="section-title">管理员通知区（所有兑换请求）</div>
-            <div class="notice-box" id="noticeBox"></div>
-        </div>
+    <div id="mainSection" style="display:none;">
+        <h3>你好，<span id="userName"></span></h3>
+        <p>你的积分：<span id="pointsDisplay"></span></p>
+        <button onclick="logoutUser()">退出</button>
     </div>
 
     <script>
-        // ==================== Supabase 配置 ====================
-        const SUPABASE_URL = 'https://qiqevvtavamlnabhajza.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpcWV2dnRhdmFtbG5hYmhhanphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4NjAwNzAsImV4cCI6MjEwMjQzNjA3MH0.kfbCBMtFEPSJBXHkVpK8-mbgyS68Pi0w1XzihghemDk';
+        const SUPABASE_URL = 'https://hjktfecloctfpaoohzax.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhqa3RmZWNsb2N0ZnBhb29oemF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4ODQ5MzksImV4cCI6MjEwMjQ2MDkzOX0.Kd94mBz7-2EX9Xu3HZUKawIgUWCrVbFsH7rXFyz7WUg';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let currentUser = null;
 
-        // 登录函数（必须与按钮 onclick 一致）
         async function loginUser() {
             const account = document.getElementById('accountInput').value.trim();
             const password = document.getElementById('passwordInput').value.trim();
-            if (!account || !password) {
-                alert('请输入账号和密码');
-                return;
-            }
+            if (!account || !password) { alert('请输入账号和密码'); return; }
 
             const { data, error } = await supabase.rpc('login_user', {
                 p_account: account,
@@ -90,124 +38,25 @@
 
             if (error) {
                 console.error('登录失败:', error);
-                alert('登录失败，请重试');
+                alert('账号或密码错误');
                 return;
             }
 
             if (data && data.success) {
-                currentUser = { id: data.user_id, name: data.name };
-                document.getElementById('loginSection').classList.add('hidden');
-                document.getElementById('mainSection').classList.remove('hidden');
+                currentUser = data;
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('mainSection').style.display = 'block';
                 document.getElementById('userName').textContent = data.name;
-                loadAll();
+                document.getElementById('pointsDisplay').textContent = data.points;
             } else {
-                alert(data?.msg || '登录失败');
+                alert(data.msg || '账号或密码错误');
             }
         }
 
         function logoutUser() {
             currentUser = null;
-            document.getElementById('loginSection').classList.remove('hidden');
-            document.getElementById('mainSection').classList.add('hidden');
-            document.getElementById('accountInput').value = '';
-            document.getElementById('passwordInput').value = '';
-        }
-
-        async function loadPoints() {
-            const { data, error } = await supabase
-                .from('users')
-                .select('points')
-                .eq('id', currentUser.id)
-                .single();
-            if (error) { console.error(error); return; }
-            document.getElementById('pointsDisplay').textContent = data.points;
-        }
-
-        async function loadPrizes() {
-            const { data, error } = await supabase
-                .from('prizes')
-                .select('*')
-                .order('cost', { ascending: true });
-            if (error) { console.error(error); return; }
-            const container = document.getElementById('prizeList');
-            container.innerHTML = data.length === 0
-                ? '<div class="empty">暂无奖品</div>'
-                : data.map(p => `
-                    <div class="prize-item">
-                        <div class="prize-info">
-                            <div class="prize-name">${p.name}</div>
-                            <div class="prize-cost">${p.cost} 积分</div>
-                            <div class="prize-stock">剩余 ${p.stock} 件</div>
-                        </div>
-                        <button class="exchange-btn" onclick="exchangePrize('${p.id}')" ${p.stock <= 0 ? 'disabled' : ''}>
-                            ${p.stock <= 0 ? '已兑完' : '兑换'}
-                        </button>
-                    </div>
-                `).join('');
-        }
-
-        async function loadRecords() {
-            const { data, error } = await supabase
-                .from('exchanges')
-                .select('*')
-                .eq('user_id', currentUser.id)
-                .order('created_at', { ascending: false });
-            if (error) { console.error(error); return; }
-            const container = document.getElementById('recordList');
-            container.innerHTML = data.length === 0
-                ? '<div class="empty">暂无兑换记录</div>'
-                : data.map(r => `
-                    <div class="record-item">
-                        <div class="record-info">
-                            <div class="record-name">${r.prize_name}</div>
-                            <div class="record-time">${new Date(r.created_at).toLocaleString()}</div>
-                        </div>
-                        <div class="record-right">
-                            <div class="record-cost">-${r.cost} 积分</div>
-                            <span class="record-status">${r.status}</span>
-                        </div>
-                    </div>
-                `).join('');
-        }
-
-        async function loadNotices() {
-            const { data, error } = await supabase
-                .from('exchanges')
-                .select('*')
-                .order('created_at', { ascending: false })
-                .limit(20);
-            if (error) { console.error(error); return; }
-            const container = document.getElementById('noticeBox');
-            container.innerHTML = data.length === 0
-                ? '<div class="empty">暂无兑换请求</div>'
-                : data.map(n => `
-                    <div class="notice-item">
-                        【${new Date(n.created_at).toLocaleString()}】${n.prize_name}，消耗${n.cost}积分
-                    </div>
-                `).join('');
-        }
-
-        async function exchangePrize(prizeId) {
-            if (!currentUser) return;
-            if (!confirm('确定使用积分兑换该奖品吗？')) return;
-            const { data, error } = await supabase.rpc('exchange_prize', {
-                p_user_id: currentUser.id,
-                p_prize_id: prizeId
-            });
-            if (error) { console.error(error); alert('兑换失败'); return; }
-            if (data.success) {
-                alert('兑换成功！');
-                loadAll();
-            } else {
-                alert(data.msg || '兑换失败');
-            }
-        }
-
-        function loadAll() {
-            loadPoints();
-            loadPrizes();
-            loadRecords();
-            loadNotices();
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('mainSection').style.display = 'none';
         }
     </script>
 </body>
