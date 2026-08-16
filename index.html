@@ -36,6 +36,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- 登录界面（默认显示） -->
         <div id="loginSection" class="login-box">
             <h3>队员登录</h3>
             <input type="text" id="accountInput" placeholder="账号">
@@ -43,6 +44,7 @@
             <button onclick="loginUser()">登录</button>
         </div>
 
+        <!-- 主界面（默认隐藏） -->
         <div id="mainSection" class="hidden">
             <div style="text-align:right; margin-bottom:10px;">
                 <span id="userName"></span>
@@ -65,12 +67,15 @@
     </div>
 
     <script>
+        // ==================== Supabase 配置 ====================
+        // 注意：URL 末尾不要包含 /rest/v1/
         const SUPABASE_URL = 'https://qiqevvtavamlnabhajza.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpcWV2dnRhdmFtbG5hYmhhanphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4NjAwNzAsImV4cCI6MjEwMjQzNjA3MH0.kfbCBMtFEPSJBXHkVpK8-mbgyS68Pi0w1XzihghemDk';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let currentUser = null;
+        let currentUser = null; // { id, name }
 
+        // 登录函数
         async function loginUser() {
             const account = document.getElementById('accountInput').value.trim();
             const password = document.getElementById('passwordInput').value.trim();
